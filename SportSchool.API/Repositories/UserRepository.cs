@@ -51,7 +51,19 @@ namespace SportSchool.API.Repositories
 
         public User EditUser(User user, Guid id)
         {
-            throw new NotImplementedException();
+            
+            var finduser = _context.Users.FirstOrDefault(u => u.User_Guid == id);
+            if(finduser != null)
+            {
+                finduser.UserName = user.UserName;
+                finduser.Email = user.Email;
+                finduser.Password = user.Password;
+                _context.Update(finduser);
+                _context.SaveChanges();
+                return finduser;
+            }
+            else { return null; }  
+            
         }
 
         public User GetUserById(Guid id)

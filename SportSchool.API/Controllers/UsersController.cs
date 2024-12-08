@@ -69,6 +69,21 @@ namespace SportSchool.API.Controllers
                 return Ok($"Пользователь {id} удалён!");
             }
         }
+
+        [HttpPut("updateUser")]
+
+        public async Task<ActionResult<User>> UpdateUser(User user, Guid id)
+        {
+            var result = _repo.EditUser(user, id);
+            if(result == null)
+            {
+                return BadRequest("Не получилось обновить пользователя!");
+            }    
+            else
+            {
+                return Ok(result);
+            }
+        }
         
 
         /*// GET: Users/Details/5
