@@ -12,7 +12,7 @@ using SportSchool.API.Data;
 namespace SportSchool.API.Migrations
 {
     [DbContext(typeof(SportSchoolScheduleDBContext))]
-    [Migration("20241207222749_Init")]
+    [Migration("20241208205035_Init")]
     partial class Init
     {
         /// <inheritdoc />

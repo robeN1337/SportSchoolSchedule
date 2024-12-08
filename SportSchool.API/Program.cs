@@ -5,6 +5,8 @@ using SportSchool.API.Data;
 using SportSchool.API.Entities;
 using static System.Net.Mime.MediaTypeNames;
 using System;
+using SportSchool.API.Interfaces;
+using SportSchool.API.Repositories;
 
 namespace SportSchool.API
 {
@@ -19,10 +21,11 @@ namespace SportSchool.API
 
             builder.Services.AddControllers();
             builder.Services.AddScoped<SportSchoolScheduleDBContext>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            string connstring = builder.Configuration.GetConnectionString("DefaultConnection");
-            builder.Services.AddDbContext<SportSchoolScheduleDBContext>(o => o.UseSqlServer("Data Source = 1; Initial Catalog = SportSchoolScheduleDB; Integrated Security = True; Connect Timeout = 30; Encrypt = False; Trust Server Certificate = False; Application Intent = ReadWrite; Multi Subnet Failover = False"));
+            //string connstring = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<SportSchoolScheduleDBContext>(o => o.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SportSchoolScheduleDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"));
             builder.Services.AddSwaggerGen();
 
 

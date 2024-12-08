@@ -9,7 +9,7 @@ namespace SportSchool.API.Data
         public SportSchoolScheduleDBContext(DbContextOptions dbContextOptions)
             : base(dbContextOptions)
         {
-          
+            Database.EnsureCreated();
         }
 
         
