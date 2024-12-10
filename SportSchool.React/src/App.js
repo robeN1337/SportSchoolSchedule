@@ -15,9 +15,9 @@ const App = () => {
       <main>
         <Routes>
           <Route path="/" element={<Home />} errorElement={<ErrorComponent />} />
-          <Route path="/login" element={<LoginComponent />} errorElement={<ErrorComponent />}  />
+          <Route path="/Login" element={<LoginComponent />} errorElement={<ErrorComponent />}  />
           <Route path="/RegisterJ" element={<Register />} errorElement={<ErrorComponent />} />
-          <Route path="/schedule" element={<ScheduleComponent />} errorElement={<ErrorComponent />} />
+          <Route path="/Schedule" element={<ScheduleComponent />} errorElement={<ErrorComponent />} />
           
         </Routes>
       </main>
