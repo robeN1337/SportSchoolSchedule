@@ -78,5 +78,11 @@ namespace SportSchool.API.Repositories
             return result;
         }
 
+        public User GetUserByEmailAndPassword(string email, string password)
+        {
+            var result = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            return result;
+        }
+
     }
 }

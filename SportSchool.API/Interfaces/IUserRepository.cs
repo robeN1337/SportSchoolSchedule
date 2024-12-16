@@ -7,6 +7,7 @@ namespace SportSchool.API.Interfaces
         User CreateUser(User user);
         List<User> GetUsers();
         User GetUserById(Guid id);
+        User GetUserByEmailAndPassword(string email, string password);
         User EditUser(User user, Guid id);
         bool DeleteUser(Guid id);
 

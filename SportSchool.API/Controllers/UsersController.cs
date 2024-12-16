@@ -215,5 +215,26 @@ namespace SportSchool.API.Controllers
         {
             return _context.Users.Any(e => e.User_Guid == id);
         }*/
+
+
+
+        // GET: api/Users/auth?email=a&password=b
+        [HttpGet("auth")]
+        public async Task<ActionResult<User>> GetByEmailAndPassword(string email, string password)
+        {
+
+            var current_user = _repo.GetUserByEmailAndPassword(email, password);
+            if (current_user != null)
+            {
+                return Ok(current_user);
+            }
+
+            else
+            {
+                return Problem("Не удается найти пользователя!");
+            }
+        }
     }
+
+
 }
