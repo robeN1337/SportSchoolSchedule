@@ -1,8 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import './Header.css';
+import Cookies from "js-cookie";
 
 const Header = () => {
+
+  
 
   return (
     <header className="header">
@@ -15,6 +18,7 @@ const Header = () => {
           <li><Link to="/Schedule">Расписание</Link></li>
           <li><Link to="/RegisterJ">Регистрация</Link></li>
           <li><Link to="/Login">Войти</Link></li>
+          <li><Link to ="/Logout"> </Link></li>
         </ul>
       </nav>
     </header>

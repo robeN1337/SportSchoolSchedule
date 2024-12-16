@@ -18,6 +18,7 @@ const App = () => {
           <Route path="/Login" element={<LoginComponent />} errorElement={<ErrorComponent />}  />
           <Route path="/RegisterJ" element={<Register />} errorElement={<ErrorComponent />} />
           <Route path="/Schedule" element={<ScheduleComponent />} errorElement={<ErrorComponent />} />
+          <Route path="/Logout" element={<LoginComponent />} errorElement={<ErrorComponent />} />
           
         </Routes>
       </main>

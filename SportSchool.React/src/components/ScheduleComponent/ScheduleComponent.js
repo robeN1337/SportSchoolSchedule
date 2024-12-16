@@ -41,14 +41,14 @@ const [users, setUsers] = useState();
         </thead>
         <tbody>
             {users?.map(user =>
-                <tr key={user.guid}>
+                <tr key={user.user_Guid}>
                     
-                    <td>{user.guid}</td>
-                    <td>{user.username}</td>
-                    <td>{user.email}</td>
+                    <td>{user.user_Guid}</td>
+                    <td>{user.userName}</td>
                     <td>{user.password}</td>
-                    <th><button guidvalue={user.guid} onClick={async () => {
-                        await axios.delete("http://localhost:5007/api/User/" + user.guid, config ).then(function deletedata(response) {
+                    <td>{user.email}</td>
+                    <th><button guidvalue={user.user_Guid} onClick={async () => {
+                        await axios.delete("http://localhost:5082/Users/deleteUser?id=" + user.user_Guid, config ).then(function deletedata(response) {
                             
                             console.log(response);
                         })
@@ -66,11 +66,11 @@ const [users, setUsers] = useState();
     function postClick() {
 
         try {   
-            httpClient.post("http://localhost:5007/api/User", {
-                guid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                username: "String",
-                email: "string",
-                password: "ffasfasdfas"
+            httpClient.post("http://localhost:5082/Users/newUser", {
+                user_Guid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                userName: "String",
+                password: "string",
+                email: "made by button"
             }).then(response => {
                 console.log(response);
             })
@@ -78,7 +78,7 @@ const [users, setUsers] = useState();
             console.log(error);
         }
         
-        // httpClient.post("http://localhost:5007/api/User", {
+        // httpClient.post("localhost:5082/Users/", {
         //     guid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         //     username: "String",
         //     email: "string",
@@ -96,7 +96,7 @@ const [users, setUsers] = useState();
 
   
 
-        httpClient.get("http://localhost:5007/api/User").then(function getdata(response) {
+        httpClient.get("http://localhost:5082/Users/getUsers").then(function getdata(response) {
             setUsers(response);
           
           
@@ -106,14 +106,14 @@ const [users, setUsers] = useState();
     
             response.map((user) => {
             //console.log(user.guid);
-            users_list.push(user.guid);
+            users_list.push(user.user_Guid);
             
             
           })
           console.log(users_list);
         })
       
-        // const response = fetch("http://localhost:5007/api/User").then((response) => {
+        // const response = fetch("localhost:5082/Users/").then((response) => {
         //   const data = response.json();
         //   console.log(response[4]);
         // })
