@@ -4,6 +4,7 @@ import * as sessions from "../../middleware/sessions.jsx";
 //import s from './LoginComponent.module.css';
 import './LoginComponent.css';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 
 function LoginComponent () {
@@ -23,6 +24,7 @@ function LoginComponent () {
       if ((await response).status != 200)
       {
         console.log("error" + (await response).status + " " + (await response).statusText);
+        
       }
       else
       {
@@ -33,34 +35,40 @@ function LoginComponent () {
       
     }
     catch (error) {
-      console.log(error.message + "хер" + responsestatus + " ");
+      console.log("Исключение try-catch: LoginComponent 36 строка(" + error.message + ")");
     }
 
     };
 
-
-    return (
-      <div className="login_base">
-          
-          <div className="login">
+    if (Cookies.get("session_id") != null)
+    {
+      window.location.href = "/";
+    }
+    else{
+      return (
+        <div className="login_base">
             
-              <h1 style={{textAlign: "center"}}>SKS Schedule</h1>
-
-            <div className="login_triangle"></div>
-
-            <h2 className="login_header">Войти</h2>
-
-            <form className="login_container" onSubmit={handleSubmit}>
+            <div className="login">
               
-              <p><input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required autoFocus /></p>
-              <p><input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required autoFocus /></p>
-              <p><input type="submit" value="Login" /></p>
-            </form>
-          </div>
-
-      </div>
-          
-    );
+                <h1 style={{textAlign: "center"}}>SKS Schedule</h1>
+  
+              <div className="login_triangle"></div>
+  
+              <h2 className="login_header">Войти</h2>
+  
+              <form className="login_container" onSubmit={handleSubmit}>
+                
+                <p><input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required autoFocus /></p>
+                <p><input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required autoFocus /></p>
+                <p><input type="submit" value="Login" /></p>
+              </form>
+            </div>
+  
+        </div>
+            
+      );
+    }
+    
 }
 
 

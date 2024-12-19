@@ -7,6 +7,7 @@ import LoginComponent from "./components/LoginComponent/LoginComponent";
 import ScheduleComponent from "./components/ScheduleComponent/ScheduleComponent";
 import ErrorComponent from "./components/ErrorComponent/ErrorComponent";
 import Register from "./components/Register/RegisterJ";
+import LogoutComponent from "./components/LogoutComponent/LogoutComponent";
 
 const App = () => {
   return (
@@ -18,7 +19,7 @@ const App = () => {
           <Route path="/Login" element={<LoginComponent />} errorElement={<ErrorComponent />}  />
           <Route path="/RegisterJ" element={<Register />} errorElement={<ErrorComponent />} />
           <Route path="/Schedule" element={<ScheduleComponent />} errorElement={<ErrorComponent />} />
-          <Route path="/Logout" element={<LoginComponent />} errorElement={<ErrorComponent />} />
+          <Route path="/Logout" element={<LogoutComponent />} errorElement={<ErrorComponent />} />
           
         </Routes>
       </main>

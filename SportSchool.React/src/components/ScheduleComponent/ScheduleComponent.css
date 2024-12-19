@@ -45,3 +45,11 @@
 .dropdown:hover .dropbtn {
   background-color: #3e8e41;
 }
+
+.alert {
+  padding: 15px;
+  border: 1px solid #d6e9c6;
+  border-radius: 4px;
+  color: #a31920;
+  background-color: #dff0d8;
+}
