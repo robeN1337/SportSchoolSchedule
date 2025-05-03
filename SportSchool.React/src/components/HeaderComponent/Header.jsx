@@ -8,8 +8,8 @@ const Header = () => {
     return (
       <header className="header">
         <div className="logo">
-          <img src="../../../logomain.png" alt="Logo" className="logo-image" />
-          <span className="logo-text"> <Link to="/"> College Schedule  </Link> </span>
+          <img src="../../../logomain2.png" alt="Logo" className="logo-image" />
+          <span className="logo-text"> <Link to="/"> РГБУ "СШ по Спортивной гимнастике"  </Link> </span>
         </div>
         <nav>
           <ul className="nav-links">
