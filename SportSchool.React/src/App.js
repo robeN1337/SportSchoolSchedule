@@ -8,12 +8,17 @@ import ScheduleComponent from "./components/ScheduleComponent/ScheduleComponent"
 import ErrorComponent from "./components/ErrorComponent/ErrorComponent";
 import Register from "./components/Register/RegisterJ";
 import LogoutComponent from "./components/LogoutComponent/LogoutComponent";
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
   return (
     <Router>
+      
       <Header />
       <main>
+        
         <Routes>
           <Route path="/" element={<Home />} errorElement={<ErrorComponent />} />
           <Route path="/Login" element={<LoginComponent />} errorElement={<ErrorComponent />}  />
@@ -24,6 +29,18 @@ const App = () => {
         </Routes>
       </main>
       <Footer />
+      <ToastContainer position="top-right"            // FLASH-сообщения глобальные.
+                      autoClose={5000}
+                      hideProgressBar={false}
+                      newestOnTop={true}
+                      closeOnClick={false}
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      theme="light"
+                      transition={Bounce}
+       />
     </Router>
   );
 };

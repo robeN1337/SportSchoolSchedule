@@ -53,3 +53,7 @@
   color: #a31920;
   background-color: #dff0d8;
 }
+
+.custom-progress {
+  background: #026af3 !important; /* 🟢 Цвет прогрессбара */
+}

@@ -30,7 +30,7 @@ function LoginComponent () {
       {
         console.log("success " +(await response).status + " " + (await response).statusText);
         sessions.setSessionCookie((await response).data.user_Guid);
-        window.location.href = "/Schedule";
+        window.location.href = "/";
       }
       
     }

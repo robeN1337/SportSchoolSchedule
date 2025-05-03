@@ -31,7 +31,6 @@ const Header = () => {
         <nav>
           <ul className="nav-links">
             <li><Link to="/RegisterJ">Регистрация</Link></li>
-            <li><Link to="/Schedule">Расписание</Link></li>
             <li><Link to="/Login">Войти</Link></li>
           </ul>
         </nav>
