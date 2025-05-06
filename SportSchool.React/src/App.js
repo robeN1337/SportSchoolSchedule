@@ -10,6 +10,7 @@ import Register from "./components/Register/RegisterJ";
 import LogoutComponent from "./components/LogoutComponent/LogoutComponent";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NotFoundComponent from "./components/NotFoundComponent/NotFoundComponent";
 
 
 const App = () => {
@@ -25,7 +26,7 @@ const App = () => {
           <Route path="/RegisterJ" element={<Register />} errorElement={<ErrorComponent />} />
           <Route path="/Schedule" element={<ScheduleComponent />} errorElement={<ErrorComponent />} />
           <Route path="/Logout" element={<LogoutComponent />} errorElement={<ErrorComponent />} />
-          
+          <Route path="*" element={<NotFoundComponent />} />
         </Routes>
       </main>
       <Footer />
