@@ -13,8 +13,10 @@ const Header = () => {
         </div>
         <nav>
           <ul className="nav-links">
+            
             <li><Link to="/Schedule">Расписание</Link></li>
             <li><Link to="/Logout">Выйти</Link></li>
+            
           </ul>
         </nav>
       </header>
@@ -25,11 +27,12 @@ const Header = () => {
     return (
       <header className="header">
         <div className="logo">
-          <img src="../../../logomain.png" alt="Logo" className="logo-image" />
-          <span className="logo-text"> <Link to="/"> College Schedule  </Link> </span>
+          <img src="../../../logomain2.png" alt="Logo" className="logo-image" />
+          <span className="logo-text"> <Link to="/"> РГБУ "СШ по Спортивной гимнастике"  </Link> </span>
         </div>
         <nav>
           <ul className="nav-links">
+            <li><Link to="#">Контакты</Link></li>
             <li><Link to="/RegisterJ">Регистрация</Link></li>
             <li><Link to="/Login">Войти</Link></li>
           </ul>

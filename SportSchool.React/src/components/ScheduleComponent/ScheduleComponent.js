@@ -87,9 +87,20 @@ function ScheduleComponent () {
     }
 
     else {
-        
-        window.document.location.href = "/Login";
 
+        window.location.href = "/Login";
+    // toast("Вы не авторизованы!", {
+    //     progressClassName: "custom-progress",
+    //     autoClose: 4000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "light",
+        
+    // }
+    // );
     }
 
 

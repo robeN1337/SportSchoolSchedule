@@ -1,17 +1,17 @@
 import React from 'react';
 import { useState } from "react";
 import * as sessions from "../../middleware/sessions.jsx";
-//import s from './LoginComponent.module.css';
 import './LoginComponent.css';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
+
 
 
 function LoginComponent () {
+ 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); 
-  let responsestatus;
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -19,30 +19,39 @@ function LoginComponent () {
       const response = axios( {
         method: "get",
         url: 'http://localhost:5082/Users/auth?email=' + email + "&password=" + password
-      });
-  
-      if ((await response).status != 200)
-      {
-        console.log("error" + (await response).status + " " + (await response).statusText);
-        
-      }
-      else
-      {
+      })
+
         console.log("success " +(await response).status + " " + (await response).statusText);
         sessions.setSessionCookie((await response).data.user_Guid);
-        window.location.href = "/";
-      }
+        sessionStorage.setItem("successLogin", "true");
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 100);
+
       
     }
     catch (error) {
       console.log("Исключение try-catch: LoginComponent 36 строка(" + error.message + ")");
+      toast("Неверный логин или пароль!", {
+        progressClassName: "custom-progress",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        
+      })
     }
 
     };
 
     if (Cookies.get("session_id") != null)
     {
-      window.location.href = "/";
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 100);
     }
     else{
       return (
@@ -50,7 +59,7 @@ function LoginComponent () {
             
             <div className="login">
               
-                <h1 style={{textAlign: "center"}}>SKS Schedule</h1>
+                <h1 style={{textAlign: "center"}}>Вход в систему расписания</h1>
   
               <div className="login_triangle"></div>
   
@@ -58,8 +67,8 @@ function LoginComponent () {
   
               <form className="login_container" onSubmit={handleSubmit}>
                 
-                <p><input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required autoFocus /></p>
-                <p><input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required autoFocus /></p>
+                <p><input type="email" placeholder="Почта" onChange={(e) => setEmail(e.target.value)} required autoFocus /></p>
+                <p><input type="password" placeholder="Пароль" onChange={(e) => setPassword(e.target.value)} required autoFocus /></p>
                 <p><input type="submit" value="Login" /></p>
               </form>
             </div>
