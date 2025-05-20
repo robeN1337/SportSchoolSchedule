@@ -4,6 +4,8 @@
 ## Get latest from `dotnet new gitignore`
 
 
+appsettings.Development.json
+
 node_modules/
 .angular
 

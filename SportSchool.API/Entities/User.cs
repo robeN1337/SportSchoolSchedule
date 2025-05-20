@@ -1,15 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace SportSchool.API.Entities
+namespace SportSchool.API.Entities;
+
+public partial class User
 {
-    public class User
-    {
-        [Key]
-        public Guid User_Guid { get; set; }
-        public string UserName { get; set; }
+    [Key]
+    public Guid UserGuid { get; set; }
 
-        public string Password { get; set; }
+    public string Username { get; set; } = null!;
 
-        public string Email { get; set; }
-    }
+    public string Password { get; set; } = null!;
+
+    public string Email { get; set; } = null!;
 }

@@ -7,27 +7,39 @@ using static System.Net.Mime.MediaTypeNames;
 using System;
 using SportSchool.API.Interfaces;
 using SportSchool.API.Repositories;
+using System.Configuration;
 
 namespace SportSchool.API
 {
     public class Program
     {
+        private readonly IConfiguration _configuration;
+
+        
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
 
+            
+
 
             builder.Services.AddControllers();
-            builder.Services.AddScoped<SportSchoolScheduleDBContext>();
+            builder.Services.AddScoped<SportSchoolDbPostgreContext>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            //string connstring = builder.Configuration.GetConnectionString("DefaultConnection");
-            builder.Services.AddDbContext<SportSchoolScheduleDBContext>(o => o.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SportSchoolScheduleDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"));
+            string connstring = builder.Configuration.GetConnectionString("PostgresConnection");
+            /*builder.Services.AddDbContext<SportSchoolScheduleDBContext>(o => o.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB; Initial Catalog=SportSchoolScheduleDB;Integrated Security=True;Connect Timeout=30"));
+*/
+            builder.Services.AddDbContext<SportSchoolScheduleDBContext>(options => options.UseNpgsql(connstring));
             builder.Services.AddSwaggerGen();
 
+            builder.WebHost.ConfigureKestrel(serverOptions =>
+            {
+                serverOptions.Configure(builder.Configuration.GetSection("Kestrel"));
+            });
 
             var app = builder.Build();
 
@@ -38,7 +50,7 @@ namespace SportSchool.API
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
 
             app.UseAuthorization();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

@@ -7,8 +7,8 @@ namespace SportSchool.API.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly SportSchoolScheduleDBContext _context;
-        public UserRepository(SportSchoolScheduleDBContext context) {
+        private readonly SportSchoolDbPostgreContext _context;
+        public UserRepository(SportSchoolDbPostgreContext context) {
 
             _context = context;
 
@@ -16,8 +16,8 @@ namespace SportSchool.API.Repositories
         public User CreateUser(User user)
         {
             var result = new User();
-            result.User_Guid = Guid.NewGuid();
-            result.UserName = user.UserName;
+            result.UserGuid = Guid.NewGuid();
+            result.Username = user.Username;
             result.Email = user.Email;
             result.Password = user.Password;
             _context.Add(result);
@@ -28,7 +28,7 @@ namespace SportSchool.API.Repositories
         public bool DeleteUser(Guid id)
         {
 
-            var user = _context.Users.FirstOrDefault(u => u.User_Guid == id);
+            var user = _context.Users.FirstOrDefault(u => u.UserGuid == id);
             if (user != null)
             {
                 var resultremove = _context.Users.Remove(user);
@@ -52,10 +52,10 @@ namespace SportSchool.API.Repositories
         public User EditUser(User user, Guid id)
         {
             
-            var finduser = _context.Users.FirstOrDefault(u => u.User_Guid == id);
+            var finduser = _context.Users.FirstOrDefault(u => u.UserGuid == id);
             if(finduser != null)
             {
-                finduser.UserName = user.UserName;
+                finduser.Username = user.Username;
                 finduser.Email = user.Email;
                 finduser.Password = user.Password;
                 _context.Update(finduser);
@@ -68,7 +68,7 @@ namespace SportSchool.API.Repositories
 
         public User GetUserById(Guid id)
         {
-            var result = _context.Users.FirstOrDefault(u => u.User_Guid == id);
+            var result = _context.Users.FirstOrDefault(u => u.UserGuid == id);
             return result;
         }
 
