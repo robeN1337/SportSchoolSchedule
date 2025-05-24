@@ -18,11 +18,11 @@ function LoginComponent () {
     try{
       const response = axios( {
         method: "get",
-        url: 'http://localhost:5082/Users/auth?email=' + email + "&password=" + password
+        url: '/api/Users/auth?email=' + email + "&password=" + password
       })
 
         console.log("success " +(await response).status + " " + (await response).statusText);
-        sessions.setSessionCookie((await response).data.user_Guid);
+        sessions.setSessionCookie((await response).data.userGuid);
         sessionStorage.setItem("successLogin", "true");
         setTimeout(() => {
           window.location.href = "/";
@@ -32,7 +32,7 @@ function LoginComponent () {
     }
     catch (error) {
       console.log("Исключение try-catch: LoginComponent 36 строка(" + error.message + ")");
-      toast("Неверный логин или пароль!", {
+      toast("Что-то пошло не так! " + "(" + (error.message) + ")", {
         progressClassName: "custom-progress",
         autoClose: 3000,
         hideProgressBar: false,

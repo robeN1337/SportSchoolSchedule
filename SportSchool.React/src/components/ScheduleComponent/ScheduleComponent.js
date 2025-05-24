@@ -45,20 +45,23 @@ function ScheduleComponent () {
             </thead>
             <tbody>
                 {users?.map(user =>
-                    <tr key={user.user_Guid}>
+                    <tr key={user.userGuid}>
                         
-                        <td>{user.user_Guid}</td>
+                        <td>{user.userGuid}</td>
                         <td>{user.userName}</td>
                         <td>{user.password}</td>
                         <td>{user.email}</td>
-                        <th><button guidvalue={user.user_Guid} onClick={async () => {
+                        <th><button guidvalue={user.userGuid} onClick={async () => {
                             
-                            await axios.delete("http://localhost:5082/Users/deleteUser?id=" + user.user_Guid, config ).then(function deletedata(response) {
+                            try
+                            {
+                                await axios.delete("api/Users/deleteUser?id=" + user.userGuid, config ).then(function deletedata(response) {
+                                
                                 
                                 console.log(response.data);
                                 
                                 
-                                toast("Пользователь " + user.user_Guid +  " удалён!", {
+                                toast("Пользователь " + user.userGuid +  " удалён!", {
                                     progressClassName: "custom-progress",
                                     autoClose: 4000,
                                     hideProgressBar: false,
@@ -73,6 +76,24 @@ function ScheduleComponent () {
                                 getClick();
                                 
                             })
+                            }
+                            catch(error)
+                            {
+                                toast("Что-то пошло не так! " + "(" + (error.message) + ")", {
+                                        progressClassName: "custom-progress",
+                                        autoClose: 3000,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                        progress: undefined,
+                                        theme: "light",
+                                        
+                                      })
+                                console.log(error);
+                            }
+
+                            
                         }}>Delete</button> </th>
                         
                     </tr>
@@ -109,14 +130,14 @@ function ScheduleComponent () {
     function postClick() {
 
         try {   
-            httpClient.post("http://localhost:5082/Users/newUser", {
+            httpClient.post("api/Users/newUser", {
                 user_Guid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                 userName: "String",
                 password: "string",
                 email: "made by button"
             }).then(response => {
                 const user = response;
-                toast("Пользователь " + user.user_Guid +  " добавлен!", {
+                toast("Пользователь " + user.userGuid +  " добавлен!", {
                     progressClassName: "custom-progress",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -152,7 +173,7 @@ function ScheduleComponent () {
 
   
 
-        httpClient.get("http://localhost:5082/Users/getUsers").then(function getdata(response) {
+        httpClient.get("api/Users/getUsers").then(function getdata(response) {
             setUsers(response);
           
           

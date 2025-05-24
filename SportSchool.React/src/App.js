@@ -6,7 +6,7 @@ import Home from "./components/HomeComponent/Home";
 import LoginComponent from "./components/LoginComponent/LoginComponent";
 import ScheduleComponent from "./components/ScheduleComponent/ScheduleComponent";
 import ErrorComponent from "./components/ErrorComponent/ErrorComponent";
-import Register from "./components/Register/RegisterJ";
+import Register from "./components/RegisterComponent/RegisterJ";
 import LogoutComponent from "./components/LogoutComponent/LogoutComponent";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,7 +23,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} errorElement={<ErrorComponent />} />
           <Route path="/Login" element={<LoginComponent />} errorElement={<ErrorComponent />}  />
-          <Route path="/RegisterJ" element={<Register />} errorElement={<ErrorComponent />} />
+          <Route path="/Register" element={<Register />} errorElement={<ErrorComponent />} />
           <Route path="/Schedule" element={<ScheduleComponent />} errorElement={<ErrorComponent />} />
           <Route path="/Logout" element={<LogoutComponent />} errorElement={<ErrorComponent />} />
           <Route path="*" element={<NotFoundComponent />} />
