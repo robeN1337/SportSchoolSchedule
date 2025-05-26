@@ -56,7 +56,7 @@ namespace SportSchool.API
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            }
+            
 
             app.UseHttpsRedirection();
 
