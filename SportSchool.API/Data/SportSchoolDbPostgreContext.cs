@@ -9,6 +9,7 @@ public partial class SportSchoolDbPostgreContext : DbContext
 {
 
     private readonly IConfiguration _configuration;
+    private readonly ILogger _logger;
 
     public SportSchoolDbPostgreContext(IConfiguration configuration)
     {
@@ -27,6 +28,8 @@ public partial class SportSchoolDbPostgreContext : DbContext
     public virtual DbSet<Group> Groups { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<ClassSession> ClassSessions { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     { 

@@ -24,6 +24,7 @@ namespace SportSchool.API.Controllers
         }
 
 
+
         [HttpGet("getUsers")]
         // GET: Users
         public async Task<ActionResult<List<User>>> GetUsers()

@@ -1,4 +1,5 @@
-﻿using SportSchool.API.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using SportSchool.API.Entities;
 
 namespace SportSchool.API.Interfaces
 {

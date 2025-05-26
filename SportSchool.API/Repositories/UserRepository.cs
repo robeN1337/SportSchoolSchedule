@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SportSchool.API.Data;
 using SportSchool.API.Entities;
 using SportSchool.API.Interfaces;
+using System.Collections;
 
 namespace SportSchool.API.Repositories
 {
@@ -83,6 +85,8 @@ namespace SportSchool.API.Repositories
             var result = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
             return result;
         }
+
+       
 
     }
 }
