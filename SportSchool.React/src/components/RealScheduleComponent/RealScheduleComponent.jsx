@@ -73,12 +73,14 @@ const ScheduleComponent = () => {
     //     ))}
     //   </div>
     // </div>
-
+    <div className="max-w-full px-5 text-center py-3">
+      <h1 className='text-2xl font-bold mb-4'>Расписание</h1>
     <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
+    
   {weekDays.map(day => (
     <div key={day} className="bg-white rounded shadow p-3 min-h-[200px]">
       <h2 className="text-center font-semibold text-blue-500 capitalize">{day}</h2>
-      {/* <h2 className="text-center text-sm">dsadass</h2> */}
+
 
           {schedule[day]?.[0] && (
         <p className="text-center text-sm text-gray-500 mb-2">
@@ -100,6 +102,7 @@ const ScheduleComponent = () => {
       </ul>
     </div>
   ))}
+</div>
 </div>
   );
 };

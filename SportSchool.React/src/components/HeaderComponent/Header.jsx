@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 const Header = () => {
   if (Cookies.get("session_id") != null) {
     return (
-      <header className="header">
+      <header className="header bg-blue-700">
         <div className="logo">
           <img src="../../../logomain2.png" alt="Logo" className="logo-image" />
           <span className="logo-text"> <Link to="/"> РГБУ "СШ по Спортивной гимнастике"  </Link> </span>
@@ -17,7 +17,7 @@ const Header = () => {
             <li><Link to="#">Контакты</Link></li>
             <li><Link to="/RealSchedule">Расписание</Link></li>
             {/* <li><Link to="/Logout">Выйти</Link></li> */}
-            <li><Link onClick={() => {
+            {/* <li><Link onClick={() => {
                if (Cookies.get("session_id") != null) {
                   Cookies.remove("session_id");
                   
@@ -37,8 +37,8 @@ const Header = () => {
                   );
                 }
               
-            }}>Выйти</Link></li>
-            
+            }}>Выйти</Link></li> */}
+            <li><Link to = "/profile">{Cookies.get("session_id")} Короче здесь имя пользователя</Link></li>
           </ul>
         </nav>
       </header>
@@ -47,7 +47,7 @@ const Header = () => {
   
   else{
     return (
-      <header className="header">
+      <header className="header bg-blue-700">
         <div className="logo">
           <img src="../../../logomain2.png" alt="Logo" className="logo-image" />
           <span className="logo-text"> <Link to="/"> РГБУ "СШ по Спортивной гимнастике"  </Link> </span>
@@ -55,14 +55,46 @@ const Header = () => {
         <nav>
           <ul className="nav-links">
             <li><Link to="#">Контакты</Link></li>
-            <li><Link to="/RegisterJ">Регистрация</Link></li>
-            <li><Link to="/Login">Войти</Link></li>
+
           </ul>
         </nav>
       </header>
     );
   }
   
+//   <header className="header bg-blue-800">
+//   <div className="flex items-center">
+//     <img src="../../../logomain2.png" alt="Logo" className="h-10 mr-3" />
+//     <span className="text-lg font-semibold">
+//       <Link to="/">РГБУ "СШ по Спортивной гимнастике"</Link>
+//     </span>
+//   </div>
+//   <nav>
+//     <ul className="flex gap-4 text-sm">
+//       {/* Отрисовывай разные ссылки в зависимости от логина */}
+//       {Cookies.get("session_id") ? (
+//         <>
+//           <li><Link to="#">Группы</Link></li>
+//           <li><Link to="#">Контакты</Link></li>
+//           <li><Link to="/RealSchedule">Расписание</Link></li>
+//           <li><button onClick={() => {
+//             Cookies.remove("session_id");
+//             window.location.href = "/";
+//           }}>Выйти</button></li>
+//         </>
+//       ) : (
+//         <>
+//           <li><Link to="#">Контакты</Link></li>
+//           <li><Link to="/RegisterJ">Регистрация</Link></li>
+//           <li><Link to="/Login">Войти</Link></li>
+//         </>
+//       )}
+//     </ul>
+//   </nav>
+// </header>
+
+
+
 };
 
 export default Header;
