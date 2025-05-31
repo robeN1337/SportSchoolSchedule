@@ -18,7 +18,7 @@ function LoginComponent () {
     try{
       const response = axios( {
         method: "get",
-        url: 'http://localhost:8082/Users/auth?email=' + email + "&password=" + password
+        url: 'api/Users/auth?email=' + email + "&password=" + password
       })
 
         console.log("success " +(await response).status + " " + (await response).statusText);

@@ -38,7 +38,7 @@ const Header = () => {
                 }
               
             }}>Выйти</Link></li> */}
-            <li><Link to = "/profile">{Cookies.get("session_id")} Короче здесь имя пользователя</Link></li>
+            <li><Link to = "/profile">Тренер Фамилия И.О.</Link></li>
           </ul>
         </nav>
       </header>

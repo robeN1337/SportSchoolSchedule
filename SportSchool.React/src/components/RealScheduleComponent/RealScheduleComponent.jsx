@@ -13,7 +13,7 @@ const ScheduleComponent = () => {
 
 
   useEffect(() => {
-    axios.get('http://localhost:8082/Schedule/getweeklyschedule')
+    axios.get('api/Schedule/getweeklyschedule')
       .then(response => {
         const filtered = response.data.filter(s => s.group.groupid === groupid); // TODO
         const grouped = groupByWeekday(filtered);

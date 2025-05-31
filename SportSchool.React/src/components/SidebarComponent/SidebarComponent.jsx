@@ -48,15 +48,7 @@ const Sidebar = () => {
               <UserIcon className="mr-3 h-5 w-5" />
               Профиль
             </NavLink>
-            <NavLink
-              to="/settings"
-              className={({ isActive }) =>
-                `flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${isActive ? 'bg-blue-700 text-white' : 'text-blue-100 hover:bg-blue-700'}`
-              }
-            >
-              <SettingsIcon className="mr-3 h-5 w-5" />
-              Настройки
-            </NavLink>
+            
             {Cookies.get("session_id") ? (
                 <NavLink className='flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors text-blue-100 hover:bg-blue-700' 
                 onClick={() => {

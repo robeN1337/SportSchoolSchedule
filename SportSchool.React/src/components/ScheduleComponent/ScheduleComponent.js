@@ -55,7 +55,7 @@ function ScheduleComponent () {
                             
                             try
                             {
-                                await axios.delete("http://localhost:8082/Users/deleteUser?id=" + user.userGuid, config ).then(function deletedata(response) {
+                                await axios.delete("api/Users/deleteUser?id=" + user.userGuid, config ).then(function deletedata(response) {
                                 
                                 
                                 console.log(response.data);
@@ -130,7 +130,7 @@ function ScheduleComponent () {
     function postClick() {
 
         try {   
-            httpClient.post("http://localhost:8082/Users/newUser", {
+            httpClient.post("api/Users/newUser", {
                 user_Guid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                 userName: "String",
                 password: "string",
@@ -173,7 +173,7 @@ function ScheduleComponent () {
 
   
 
-        httpClient.get("http://localhost:8082/Users/getUsers").then(function getdata(response) {
+        httpClient.get("api/Users/getUsers").then(function getdata(response) {
             setUsers(response);
           
           
