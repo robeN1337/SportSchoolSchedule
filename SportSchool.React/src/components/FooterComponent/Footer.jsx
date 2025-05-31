@@ -3,8 +3,8 @@ import './Footer.css';
 
 const Footer = () => {
   return (
-    <footer className="footer">
-      <p>© 2025 г. Черкесск</p>
+    <footer className="text-center bg-[#003366] text-white fixed bottom-[0px] w-full text-[13px] py-2">
+      © 2025. Все права защищены.
     </footer>
   );
 };

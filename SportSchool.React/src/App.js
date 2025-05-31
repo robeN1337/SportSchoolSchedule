@@ -4,7 +4,7 @@ import Header from "./components/HeaderComponent/Header";
 import Footer from "./components/FooterComponent/Footer";
 import Home from "./components/HomeComponent/Home";
 import LoginComponent from "./components/LoginComponent/LoginComponent";
-import ScheduleComponent from "./components/ScheduleComponent/ScheduleComponent";
+import ScheduleComponent from "./components/RealScheduleComponent/RealScheduleComponent";
 import ErrorComponent from "./components/ErrorComponent/ErrorComponent";
 import Register from "./components/RegisterComponent/RegisterJ";
 import LogoutComponent from "./components/LogoutComponent/LogoutComponent";
@@ -24,7 +24,7 @@ const App = () => {
           <Route path="/" element={<Home />} errorElement={<ErrorComponent />} />
           <Route path="/Login" element={<LoginComponent />} errorElement={<ErrorComponent />}  />
           <Route path="/Register" element={<Register />} errorElement={<ErrorComponent />} />
-          <Route path="/Schedule" element={<ScheduleComponent />} errorElement={<ErrorComponent />} />
+          <Route path="/RealSchedule" element={<ScheduleComponent />} errorElement={<ErrorComponent />} />
           <Route path="/Logout" element={<LogoutComponent />} errorElement={<ErrorComponent />} />
           <Route path="*" element={<NotFoundComponent />} />
         </Routes>
@@ -39,7 +39,7 @@ const App = () => {
                       pauseOnFocusLoss
                       draggable
                       pauseOnHover
-                      theme="light"
+                      theme="dark"
                       transition={Bounce}
        />
     </Router>

@@ -18,11 +18,11 @@ function LoginComponent () {
     try{
       const response = axios( {
         method: "get",
-        url: '/api/Users/auth?email=' + email + "&password=" + password
+        url: 'http://localhost:8082/Users/auth?email=' + email + "&password=" + password
       })
 
         console.log("success " +(await response).status + " " + (await response).statusText);
-        sessions.setSessionCookie((await response).data.userGuid);
+        sessions.setSessionCookie((await response).data.user_Guid);
         sessionStorage.setItem("successLogin", "true");
         setTimeout(() => {
           window.location.href = "/";

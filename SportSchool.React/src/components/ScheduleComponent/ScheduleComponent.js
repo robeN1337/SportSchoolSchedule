@@ -55,7 +55,7 @@ function ScheduleComponent () {
                             
                             try
                             {
-                                await axios.delete("api/Users/deleteUser?id=" + user.userGuid, config ).then(function deletedata(response) {
+                                await axios.delete("http://localhost:8082/Users/deleteUser?id=" + user.userGuid, config ).then(function deletedata(response) {
                                 
                                 
                                 console.log(response.data);
@@ -130,14 +130,14 @@ function ScheduleComponent () {
     function postClick() {
 
         try {   
-            httpClient.post("api/Users/newUser", {
+            httpClient.post("http://localhost:8082/Users/newUser", {
                 user_Guid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                 userName: "String",
                 password: "string",
                 email: "made by button"
             }).then(response => {
                 const user = response;
-                toast("Пользователь " + user.userGuid +  " добавлен!", {
+                toast("Пользователь " + user.user_Guid +  " добавлен!", {
                     progressClassName: "custom-progress",
                     autoClose: 3000,
                     hideProgressBar: false,
@@ -173,7 +173,7 @@ function ScheduleComponent () {
 
   
 
-        httpClient.get("api/Users/getUsers").then(function getdata(response) {
+        httpClient.get("http://localhost:8082/Users/getUsers").then(function getdata(response) {
             setUsers(response);
           
           

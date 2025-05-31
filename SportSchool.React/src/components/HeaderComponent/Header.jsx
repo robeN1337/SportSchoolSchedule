@@ -15,8 +15,29 @@ const Header = () => {
           <ul className="nav-links">
             <li><Link to="#">Группы</Link></li>
             <li><Link to="#">Контакты</Link></li>
-            <li><Link to="/Schedule">Расписание</Link></li>
-            <li><Link to="/Logout">Выйти</Link></li>
+            <li><Link to="/RealSchedule">Расписание</Link></li>
+            {/* <li><Link to="/Logout">Выйти</Link></li> */}
+            <li><Link onClick={() => {
+               if (Cookies.get("session_id") != null) {
+                  Cookies.remove("session_id");
+                  
+                  return (
+                    document.location.href = "/"
+                    
+                        
+                  );
+                  
+                }  
+              
+                else
+                {
+                  return (
+                    document.location.href = "/"
+              
+                  );
+                }
+              
+            }}>Выйти</Link></li>
             
           </ul>
         </nav>
