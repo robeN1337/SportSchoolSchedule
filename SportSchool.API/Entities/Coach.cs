@@ -14,4 +14,7 @@ public partial class Coach
     public string? Email { get; set; }
 
     public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
+
+    public Guid UserId { get; set; }
+    public User User { get; set; }
 }

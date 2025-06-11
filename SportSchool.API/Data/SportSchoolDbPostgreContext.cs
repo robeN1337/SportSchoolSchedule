@@ -59,6 +59,15 @@ public partial class SportSchoolDbPostgreContext : DbContext
                 .HasColumnName("gender");
             entity.Property(e => e.Groupid).HasColumnName("groupid");
 
+
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.HasOne(d => d.User)
+                .WithOne(p => p.Athlete)
+                .HasForeignKey<Athlete>(d => d.UserId)
+                .IsRequired() 
+                .OnDelete(DeleteBehavior.Cascade);
+
+
             entity.HasOne(d => d.Group).WithMany(p => p.Athletes)
                 .HasForeignKey(d => d.Groupid)
                 .HasConstraintName("athletes_groupid_fkey");
@@ -80,6 +89,15 @@ public partial class SportSchoolDbPostgreContext : DbContext
             entity.Property(e => e.Phone)
                 .HasMaxLength(20)
                 .HasColumnName("phone");
+
+            // ❗ Внешний ключ к User (тоже nullable на первом этапе)
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.HasOne(d => d.User)
+                .WithOne(p => p.Coach)
+                .HasForeignKey<Coach>(d => d.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
         });
 
         modelBuilder.Entity<Group>(entity =>
@@ -117,6 +135,7 @@ public partial class SportSchoolDbPostgreContext : DbContext
             entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.Password).HasColumnName("password");
             entity.Property(e => e.Username).HasColumnName("username");
+            entity.Property(e => e.Role).HasColumnName("role");
         });
 
         OnModelCreatingPartial(modelBuilder);

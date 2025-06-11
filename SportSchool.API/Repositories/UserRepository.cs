@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportSchool.API.Data;
+using SportSchool.API.DTOs;
 using SportSchool.API.Entities;
 using SportSchool.API.Interfaces;
 using System.Collections;
@@ -86,7 +87,45 @@ namespace SportSchool.API.Repositories
             return result;
         }
 
-       
+        public async Task<UserProfileDto?> GetUserProfileAsync(Guid userGuid)
+        {
+            var user = await _context.Users
+            .Include(u => u.Coach)
+                .ThenInclude(c => c.Groups)
+            .Include(u => u.Athlete)
+                .ThenInclude(a => a.Group)
+            .FirstOrDefaultAsync(u => u.UserGuid == userGuid);
+
+
+
+            if (user == null)
+                return null;
+
+            string fullName = user.Role switch
+            {
+                "coach" => user.Coach?.Fullname ?? "Coach",
+                "athlete" => user.Athlete?.Fullname ?? "Athlete",
+                _ => "Unknown"
+            };
+
+            string? groupName = user.Role switch
+            {
+                "athlete" => user.Athlete?.Group?.Groupname,
+                "coach" => user.Coach?.Groups.FirstOrDefault()?.Groupname,
+                _ => null
+            };
+
+            return new UserProfileDto
+            {
+                UserGuid = user.UserGuid,
+                Role = user.Role,
+                FullName = fullName,
+                GroupName = groupName
+
+            };
+        }
+
+
 
     }
 }

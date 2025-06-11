@@ -18,4 +18,7 @@ public partial class Athlete
     public string? Contact { get; set; }
 
     public virtual Group? Group { get; set; }
+
+    public Guid UserId { get; set; }
+    public User User { get; set; }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SportSchool.API.Data;
@@ -11,9 +12,11 @@ using SportSchool.API.Data;
 namespace SportSchool.API.Migrations.SportSchoolDbPostgre
 {
     [DbContext(typeof(SportSchoolDbPostgreContext))]
-    partial class SportSchoolDbPostgreContextModelSnapshot : ModelSnapshot
+    [Migration("20250601215424_AddUserRelationsToCoachAndAthlete_strongbond")]
+    partial class AddUserRelationsToCoachAndAthlete_strongbond
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

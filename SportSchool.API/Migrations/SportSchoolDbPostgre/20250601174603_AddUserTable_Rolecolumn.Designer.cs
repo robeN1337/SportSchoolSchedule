@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SportSchool.API.Data;
@@ -11,9 +12,11 @@ using SportSchool.API.Data;
 namespace SportSchool.API.Migrations.SportSchoolDbPostgre
 {
     [DbContext(typeof(SportSchoolDbPostgreContext))]
-    partial class SportSchoolDbPostgreContextModelSnapshot : ModelSnapshot
+    [Migration("20250601174603_AddUserTable_Rolecolumn")]
+    partial class AddUserTable_Rolecolumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,17 +58,10 @@ namespace SportSchool.API.Migrations.SportSchoolDbPostgre
                         .HasColumnType("integer")
                         .HasColumnName("groupid");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
                     b.HasKey("Athleteid")
                         .HasName("athletes_pkey");
 
                     b.HasIndex("Groupid");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("athletes", (string)null);
                 });
@@ -125,16 +121,8 @@ namespace SportSchool.API.Migrations.SportSchoolDbPostgre
                         .HasColumnType("character varying(20)")
                         .HasColumnName("phone");
 
-                    b.Property<Guid?>("UserId")
-                        .IsRequired()
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
                     b.HasKey("Coachid")
                         .HasName("coaches_pkey");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("coaches", (string)null);
                 });
@@ -194,8 +182,7 @@ namespace SportSchool.API.Migrations.SportSchoolDbPostgre
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("role");
+                        .HasColumnType("text");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -215,15 +202,7 @@ namespace SportSchool.API.Migrations.SportSchoolDbPostgre
                         .HasForeignKey("Groupid")
                         .HasConstraintName("athletes_groupid_fkey");
 
-                    b.HasOne("SportSchool.API.Entities.User", "User")
-                        .WithOne("Athlete")
-                        .HasForeignKey("SportSchool.API.Entities.Athlete", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Group");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SportSchool.API.Entities.ClassSession", b =>
@@ -235,17 +214,6 @@ namespace SportSchool.API.Migrations.SportSchoolDbPostgre
                         .IsRequired();
 
                     b.Navigation("Group");
-                });
-
-            modelBuilder.Entity("SportSchool.API.Entities.Coach", b =>
-                {
-                    b.HasOne("SportSchool.API.Entities.User", "User")
-                        .WithOne("Coach")
-                        .HasForeignKey("SportSchool.API.Entities.Coach", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SportSchool.API.Entities.Group", b =>
@@ -266,13 +234,6 @@ namespace SportSchool.API.Migrations.SportSchoolDbPostgre
             modelBuilder.Entity("SportSchool.API.Entities.Group", b =>
                 {
                     b.Navigation("Athletes");
-                });
-
-            modelBuilder.Entity("SportSchool.API.Entities.User", b =>
-                {
-                    b.Navigation("Athlete");
-
-                    b.Navigation("Coach");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SportSchool.API.Data;
@@ -11,9 +12,11 @@ using SportSchool.API.Data;
 namespace SportSchool.API.Migrations.SportSchoolDbPostgre
 {
     [DbContext(typeof(SportSchoolDbPostgreContext))]
-    partial class SportSchoolDbPostgreContextModelSnapshot : ModelSnapshot
+    [Migration("20250601204004_AddUserRelationsToCoachAndAthlete")]
+    partial class AddUserRelationsToCoachAndAthlete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +58,7 @@ namespace SportSchool.API.Migrations.SportSchoolDbPostgre
                         .HasColumnType("integer")
                         .HasColumnName("groupid");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
@@ -126,7 +129,6 @@ namespace SportSchool.API.Migrations.SportSchoolDbPostgre
                         .HasColumnName("phone");
 
                     b.Property<Guid?>("UserId")
-                        .IsRequired()
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
@@ -218,8 +220,7 @@ namespace SportSchool.API.Migrations.SportSchoolDbPostgre
                     b.HasOne("SportSchool.API.Entities.User", "User")
                         .WithOne("Athlete")
                         .HasForeignKey("SportSchool.API.Entities.Athlete", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Group");
 
@@ -242,8 +243,7 @@ namespace SportSchool.API.Migrations.SportSchoolDbPostgre
                     b.HasOne("SportSchool.API.Entities.User", "User")
                         .WithOne("Coach")
                         .HasForeignKey("SportSchool.API.Entities.Coach", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });

@@ -39,7 +39,7 @@ namespace SportSchool.API.Controllers
             var result = _repo.GetUserById(id);
             if(result == null)
             {
-                return BadRequest("Юзер не найден");
+                return BadRequest("(API GetUser Юзер не найден)");
             }
             else
             {
@@ -63,11 +63,11 @@ namespace SportSchool.API.Controllers
             var result = _repo.DeleteUser(id);
             if (result == false)
             {
-                return BadRequest("Ошибка удаления пользователя.");
+                return BadRequest("(API DeleteUser - Ошибка удаления пользователя.");
             }
             else
             {
-                return Ok($"Пользователь {id} удалён!");
+                return Ok($"(API DeleteUser - Пользователь {id} удалён!");
             }
         }
 
@@ -78,7 +78,7 @@ namespace SportSchool.API.Controllers
             var result = _repo.EditUser(user, id);
             if(result == null)
             {
-                return BadRequest("Не получилось обновить пользователя!");
+                return BadRequest("(API UpdateUser - Не получилось обновить пользователя!)");
             }    
             else
             {
@@ -232,9 +232,20 @@ namespace SportSchool.API.Controllers
 
             else
             {
-                return Problem("Не удается найти пользователя!");
+                return Problem("(API GetUserByEmailAndPassword - Не найдено");
             }
         }
+
+        [HttpGet("getUserProfile")]
+        public async Task<IActionResult> GetUserProfile([FromQuery] Guid session_id)
+        {
+            var profile = await _repo.GetUserProfileAsync(session_id);
+            if (profile == null)
+                return NotFound("(API GetUserProfile - Не найдёно)");
+
+            return Ok(profile);
+        }
+
     }
 
 
