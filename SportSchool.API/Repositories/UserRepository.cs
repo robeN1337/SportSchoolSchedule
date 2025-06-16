@@ -115,12 +115,20 @@ namespace SportSchool.API.Repositories
                 _ => null
             };
 
+            int? groupId = user.Role switch
+            {
+                "athlete" => user.Athlete?.Group?.Groupid,
+                "coach" => user.Coach?.Groups.FirstOrDefault()?.Groupid,
+                _ => null
+            };
+
             return new UserProfileDto
             {
                 UserGuid = user.UserGuid,
                 Role = user.Role,
                 FullName = fullName,
-                GroupName = groupName
+                GroupName = groupName,
+                GroupId = groupId
 
             };
         }
