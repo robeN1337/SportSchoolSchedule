@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import './Header.css';
@@ -23,6 +24,18 @@ const Header = () => {
     .then(data => {
       setuserinfo(data.fullName);
     })
+    .catch(error => {
+      toast("Ошибка при загрузке данных! " + "(" + (error.message) + ")", {
+        autoClose: 3000,
+        progressClassName: "custom-progress",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+    })
   })
 
   useEffect(() => {
@@ -42,6 +55,18 @@ const Header = () => {
       if (data.role == "dispatch")
         setuserrole("Диспетчер")
     })
+    .catch(error => {
+      toast("Ошибка при загрузке данных! " + "(" + (error.message) + ")", {
+        autoClose: 3000,
+        progressClassName: "custom-progress",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+    })
   }
   )
 
@@ -54,9 +79,9 @@ const Header = () => {
           <span className="logo-text"> <Link to="/"> РГБУ "СШ по Спортивной гимнастике"  </Link> </span>
         </div>
         <nav>
-          <ul className="nav-links">
+          <ul className="nav-links font-bold">
             <li><Link to="#">Контакты</Link></li>
-            <li><Link to = "/profile">{userrole} - {userinfo}</Link></li>
+            <li>{userrole} - {userinfo}</li>
           </ul>
         </nav>
       </header>

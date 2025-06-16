@@ -5,12 +5,91 @@ import React from 'react';
 import { EditIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon, ArrowDown} from 'lucide-react'
 import Cookies from "js-cookie";
 import { data, useNavigate } from "react-router-dom";
+import  EditSessionModal from "../EditSessionComponent/EditSessionComponent.jsx";
 
 import './RealScheduleComponent.css';
-import Dropdown from '../../middleware/dropdownbutton';
 import { getSessionCookie } from '../../middleware/sessions';
 
 const ScheduleComponent = () => {
+
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSession, setSelectedSession] = useState(null);
+
+  const handleEditSession = (session) => {
+    setSelectedSession(session);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedSession(null);
+  };
+
+  const handleSaveChanges = async (updatedSession) => {
+    // Здесь логика отправки запроса на сервер (PUT /api/ClassSessions/update)
+    // и обновление состояния расписания (schedule)
+      try {
+    // Поиск объекта группы по groupName, выбранному в форме
+    const selectedGroup = groups.find(g => g.groupname === updatedSession.groupName);
+
+    if (!selectedGroup) {
+      alert('Выбрана несуществующая группа!');
+      return;
+    }
+
+    // Формируем тело запроса с нужным groupId
+    const body = {
+      className: updatedSession.className,
+      date: updatedSession.date,
+      startTime: updatedSession.startTime,
+      endTime: updatedSession.endTime,
+      groupId: selectedGroup.groupid,  // <-- подставляем id группы из массива
+    };
+
+    const response = await axios.put(
+      `api/ClassSessions/updateClassSession?id=${updatedSession.id}`,
+      body,
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    const updatedData = response.data;
+
+    setSchedule(prevSchedule => 
+      prevSchedule.map(session => 
+        session.id === updatedData.id ? updatedData : session
+      )
+    );
+
+    setIsModalOpen(false);
+    toast("Карточка успешно обновлена!", {
+      autoClose: 3000,
+      progressClassName: "custom-progress",
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    })
+  } catch (error) {
+    console.error('Ошибка при обновлении сессии:', error);
+    toast("Ошибка при обновлении карточки! (" + error.message + ")", {
+      autoClose: 3000,
+      progressClassName: "custom-progress",
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    })
+  }
+    
+
+    console.log('Сохраняем:', updatedSession);
+    handleCloseModal();
+  };
 
 
     
@@ -22,7 +101,7 @@ const ScheduleComponent = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [schedule, setSchedule] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Группа: ");
+  const [selectedOption, setSelectedOption] = useState("Все группы");
   const [weekStartDate, setWeekStartDate] = useState(() => {
         const today = new Date();
         const day = today.getDay();
@@ -93,22 +172,6 @@ const ScheduleComponent = () => {
   useEffect(() => {
     if (session_id != null) {
       setIsLoggedIn(true);
-      // const fetchGroupId = async () => {
-    //     const res = await axios.get("api/Users/getUserProfile?session_id=" + getSessionCookie())
-    //     const data = await res.data;
-    //     setGroupname(data.groupName);
-    //     toast("Добро пожаловать! " + data.groupName, {
-    //     autoClose: 3000,
-    //     progressClassName: "custom-progress",
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "light",
-    // })
-    // };
-    // fetchGroupId();
 
     axios.get("api/Group/getGroups")
     .then(response => {
@@ -220,7 +283,7 @@ const ScheduleComponent = () => {
     }
     
     
-  }, [weekStartDate, selectedOption]);
+  }, [weekStartDate, selectedOption, schedule]);
 
   const groupByDate = (sessions) => {
     const grouped = {};
@@ -258,24 +321,6 @@ const ScheduleComponent = () => {
                         {selectedOption} <ArrowDown className="w-4 h-4 ml-1" />
                       </button>
 
-                      {/* {isOpen && (
-                        <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
-                          <div className="py-1">
-                            {["Все группы", groups].map((group) => (
-                              <button
-                                key={group}
-                                onClick={() => {
-                                  setSelectedOption(group);
-                                  setIsOpen(false);
-                                }}
-                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              >
-                                {group}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )} */}
 
                         {isOpen && (
                       <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
@@ -362,7 +407,11 @@ const ScheduleComponent = () => {
                           key={index}
                           className="border p-2 mb-2 rounded bg-blue-50 text-sm"
                         >
-                          <EditIcon size={16} className="-mb-5 ml-auto" />
+                          <EditIcon
+                            size={16}
+                            className="-mb-5 ml-auto hover:text-blue-500 cursor-pointer"
+                            onClick={() => handleEditSession(session)}
+                          />
                           <p>
                             <strong>{session.className}</strong>
                           </p>
@@ -386,7 +435,17 @@ const ScheduleComponent = () => {
                   </div>
                 ))}
               </div>
+              {isModalOpen && selectedSession && (
+                <EditSessionModal
+                  isOpen={isModalOpen}
+                  onClose={handleCloseModal}
+                  session={selectedSession}
+                  onSave={handleSaveChanges}
+                  groups={groups}
+                />
+                )}
             </div>
+            
         );
       }
 
@@ -474,6 +533,7 @@ const ScheduleComponent = () => {
       }
 
 
+      
           
 }
       

@@ -64,7 +64,7 @@ function LoginComponent () {
       })
       }
       else {
-        toast("Что-то пошло не так! " + "(" + (error.message) + ")", {
+        toast("Что-то пошло не так! " + "(" + (error.message) + ", \nСервер недоступен)", {
         progressClassName: "custom-progress",
         autoClose: 3000,
         hideProgressBar: false,
