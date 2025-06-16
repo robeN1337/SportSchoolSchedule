@@ -8,7 +8,8 @@ using System;
 using SportSchool.API.Interfaces;
 using SportSchool.API.Repositories;
 using System.Configuration;
-using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
+
 
 namespace SportSchool.API
 {
@@ -26,10 +27,19 @@ namespace SportSchool.API
             
 
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(opts =>
+                {
+                    // .IgnoreCycles пропустит повторные ссылки, не выбрасывая ошибки
+                    opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+
+                    // Если хочешь сохранять ссылки и выдавать $id/$ref, можно вместо этого использовать:
+                    // opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                }); ;
             builder.Services.AddScoped<SportSchoolDbPostgreContext>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+            builder.Services.AddScoped<IGroupRepository, GroupRepository>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Logging.ClearProviders();
