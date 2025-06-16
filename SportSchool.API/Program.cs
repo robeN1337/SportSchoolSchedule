@@ -38,6 +38,7 @@ namespace SportSchool.API
                 }); ;
             builder.Services.AddScoped<SportSchoolDbPostgreContext>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IClassSessionsRepository, ClassSessionsRepository>();
             builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
             builder.Services.AddScoped<IGroupRepository, GroupRepository>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
