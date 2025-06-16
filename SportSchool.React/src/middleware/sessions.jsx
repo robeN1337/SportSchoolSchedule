@@ -16,6 +16,6 @@ export function getSessionCookie() {
         return null;
     }
     else {
-        return JSON.parse(sessionCookie);
+        return sessionCookie;
     }
 }

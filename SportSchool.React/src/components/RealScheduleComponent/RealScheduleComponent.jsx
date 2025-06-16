@@ -2,9 +2,9 @@ import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import React from 'react';
-import { EditIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon} from 'lucide-react'
+import { EditIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon, ArrowDown} from 'lucide-react'
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 
 import './RealScheduleComponent.css';
 import Dropdown from '../../middleware/dropdownbutton';
@@ -16,6 +16,7 @@ const ScheduleComponent = () => {
     
   const [groupname, setGroupname] = useState("");
   const [groupid, setGroupid] = useState(0);
+  const [groups, setGroups] = useState([]);
   const [userrole, setUserRole] = useState("");
   const session_id = Cookies.get("session_id");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,6 +32,8 @@ const ScheduleComponent = () => {
         monday.setHours(0, 0, 0, 0);
         return monday;
       });
+
+  const [grouplist, setGroupList] = useState([]);
 
 
   const navigate = useNavigate();
@@ -91,7 +94,7 @@ const ScheduleComponent = () => {
     if (session_id != null) {
       setIsLoggedIn(true);
       // const fetchGroupId = async () => {
-    //     const res = await axios.get("http://localhost:8082/Users/getUserProfile?session_id=" + getSessionCookie())
+    //     const res = await axios.get("api/Users/getUserProfile?session_id=" + getSessionCookie())
     //     const data = await res.data;
     //     setGroupname(data.groupName);
     //     toast("Добро пожаловать! " + data.groupName, {
@@ -106,6 +109,25 @@ const ScheduleComponent = () => {
     // })
     // };
     // fetchGroupId();
+
+    axios.get("api/Group/getGroups")
+    .then(response => {
+      const data = response.data;
+      setGroups(data);
+    })
+    .catch(error => {
+      console.error('Ошибка при загрузке списка групп: ', error)
+      toast("Ошибка при загрузке групп  " + "(" + (error.message) + ")", {
+        autoClose: 3000,
+        progressClassName: "custom-progress",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+    });
 
     axios.get("api/Users/getUserProfile?session_id=" + getSessionCookie())
     .then(response => {
@@ -227,21 +249,66 @@ const ScheduleComponent = () => {
               <h1 className="text-2xl font-bold text-left">Расписание</h1>
               {/* Группа Dropdown */}
 
-              ...
-                  
-              {/* Кнопки переключения недель */}
-              {/* <div className="flex items-center space-x-2">
-                <button className="p-1 rounded-full bg-gray-200 hover:bg-gray-300">
-                  <ChevronLeftIcon size={20} />
-                </button>
-                <div className="flex items-center bg-white px-4 py-2 rounded-lg shadow-sm">
-                  <CalendarIcon size={18} className="text-blue-600 mr-2" />
-                  <span className="text-sm font-medium">Текущая неделя</span>
-                </div>
-                <button className="p-1 rounded-full bg-gray-200 hover:bg-gray-300">
-                  <ChevronRightIcon size={20} />
-                </button>
-              </div> */}
+              <div className="relative inline-block text-left ml-4">
+                      <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 
+                        bg-white text-xs font-medium text-gray-700 hover:bg-gray-50"
+                      >
+                        {selectedOption} <ArrowDown className="w-4 h-4 ml-1" />
+                      </button>
+
+                      {/* {isOpen && (
+                        <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+                          <div className="py-1">
+                            {["Все группы", groups].map((group) => (
+                              <button
+                                key={group}
+                                onClick={() => {
+                                  setSelectedOption(group);
+                                  setIsOpen(false);
+                                }}
+                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                {group}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )} */}
+
+                        {isOpen && (
+                      <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+                        <div className="py-1">
+                          {/* Опция "Все группы" */}
+                          <button
+                            onClick={() => {
+                              setSelectedOption("Все группы");
+                              setIsOpen(false);
+                            }}
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          >
+                            Все группы
+                          </button>
+
+                          {/* Список групп из API */}
+                          {groups.map((group) => (
+                            <button
+                              key={group.groupid}
+                              onClick={() => {
+                                setSelectedOption(group.groupname);
+                                setIsOpen(false);
+                                 // передаем выбранный id группы наверх
+                              }}
+                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            >
+                              {group.groupname}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    </div>
 
                 <div className="flex items-center space-x-2">
                   <button
