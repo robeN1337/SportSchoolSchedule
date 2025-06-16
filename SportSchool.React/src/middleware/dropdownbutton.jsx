@@ -25,22 +25,28 @@ export default function Dropdown() {
             <button
               onClick={() => {
                 setIsOpen(false);
-                setSelectedOption("Группа СР-24")}}
+                setSelectedOption("Группа 1")}}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              СР-24
+              1
             </button>
             <button
-              onClick={() => alert("Выбрано: Пункт 2")}
+              onClick={() => {
+                setIsOpen(false);
+                setSelectedOption("Группа 2")
+              }}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              СР-25
+              2
             </button>
             <button
-              onClick={() => alert("Выбрано: Пункт 3")}
+              onClick={() => {
+                setIsOpen(false);
+                setSelectedOption("Группа 3")
+              }}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              СР-32
+              3
             </button>
           </div>
         </div>

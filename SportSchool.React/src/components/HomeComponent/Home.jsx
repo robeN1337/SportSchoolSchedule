@@ -35,7 +35,7 @@ const Home = () => {
     if (session_id) {
       
       setIsLoggedIn(true);
-      axios.get(`http://localhost:8082/Users/getUserProfile?session_id=${session_id}`)
+      axios.get(`api/Users/getUserProfile?session_id=${session_id}`)
       .then(response => {
         setProfileData(response.data);
         if (response.data.role === "athlete") {
