@@ -77,6 +77,42 @@ namespace SportSchool.API.Controllers
             return Ok(session);
         }
 
+        [HttpGet("getClassSessions")]
+        public async Task<ActionResult<IEnumerable<ClassSession>>> GetAllClassSessions()
+        {
+            var sessions = await _context.ClassSessions
+                .Include(cs => cs.Group)
+                .ToListAsync();
+
+            return Ok(sessions);
+        }
+
+        [HttpGet("getClassSessionById")]
+        public async Task<IActionResult> GetClassSessionById(int id)
+        {
+            var session = await _context.ClassSessions
+                .Include(cs => cs.Group)
+                .FirstOrDefaultAsync(cs => cs.Id == id);
+
+            if (session == null)
+                return NotFound(new { message = $"Занятие с id = {id} не найдено" });
+
+            return Ok(session);
+        }
+
+        [HttpDelete("deleteClassSessionById")]
+        public async Task<IActionResult> DeleteClassSession(int id)
+        {
+            var session = await _context.ClassSessions.FindAsync(id);
+            if (session == null)
+                return NotFound(new { message = $"Занятие с id = {id} не найдено" });
+
+            _context.ClassSessions.Remove(session);
+            await _context.SaveChangesAsync();
+
+            return Ok($"Занятие с id {id} ({session.ClassName}) успешно удалено."); ;
+        }
+
         /*[HttpDelete("deleteGroup")]
         public async Task<ActionResult<bool>> DeleteGroup(int groupid)
         {
