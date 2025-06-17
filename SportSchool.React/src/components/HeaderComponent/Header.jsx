@@ -80,7 +80,6 @@ const Header = () => {
         </div>
         <nav>
           <ul className="nav-links font-bold">
-            <li><Link to="#">Контакты</Link></li>
             <li>{userrole} - {userinfo}</li>
           </ul>
         </nav>
@@ -97,7 +96,6 @@ const Header = () => {
         </div>
         <nav>
           <ul className="nav-links">
-            <li><Link to="#">Контакты</Link></li>
 
           </ul>
         </nav>

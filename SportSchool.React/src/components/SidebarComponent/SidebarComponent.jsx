@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 
 import Cookies from "js-cookie";
-const Sidebar = () => {
+const Sidebar = ({userrole}) => {  // TODO: СДЕЛАТЬ ВЫВОД КНОПКИ ГРУППЫ В ЗАВИСИМОСТИ ОТ РОЛИ
   return (
     <aside className="fixed top-30 left-0 w-64 h-[calc(100vh-5rem)] bg-blue-800 text-white z-40 overflow-y-auto">
      
@@ -33,6 +33,7 @@ const Sidebar = () => {
             <CalendarIcon className="mr-3 h-5 w-5" />
             Расписание
           </NavLink>
+            
             
             <NavLink 
             to="/groups"

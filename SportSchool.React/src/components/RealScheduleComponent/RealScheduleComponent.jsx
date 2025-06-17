@@ -2,15 +2,21 @@ import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import React from 'react';
-import { EditIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon, ArrowDown} from 'lucide-react'
+import { EditIcon, ChevronLeftIcon, ChevronRightIcon, CalendarIcon, ArrowDown, SquareX} from 'lucide-react'
 import Cookies from "js-cookie";
 import { data, useNavigate } from "react-router-dom";
 import  EditSessionModal from "../EditSessionComponent/EditSessionComponent.jsx";
 
 import './RealScheduleComponent.css';
+import Dropdown from '../../middleware/dropdownbutton';
 import { getSessionCookie } from '../../middleware/sessions';
 
 const ScheduleComponent = () => {
+
+
+  
+  const [sessionToDelete, setSessionToDelete] = useState(null);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,7 +40,16 @@ const ScheduleComponent = () => {
     const selectedGroup = groups.find(g => g.groupname === updatedSession.groupName);
 
     if (!selectedGroup) {
-      alert('Выбрана несуществующая группа!');
+      toast("Выбрана несуществующая группа!", {
+        autoClose: 3000,
+        progressClassName: "custom-progress",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
 
@@ -62,6 +77,7 @@ const ScheduleComponent = () => {
     );
 
     setIsModalOpen(false);
+    fetchSchedule();
     toast("Карточка успешно обновлена!", {
       autoClose: 3000,
       progressClassName: "custom-progress",
@@ -165,6 +181,49 @@ const ScheduleComponent = () => {
   }));
 };
 
+  const fetchSchedule = (role, groupId) => {
+  axios.get('api/Schedule/getweeklyschedule')
+    .then(response => {
+      const allSessions = response.data;
+      const mondayStr = formatLocalDate(weekStartDate);
+      const weekDates = generateWeekDates(mondayStr);
+
+      let filtered = [];
+
+      if (userrole === "admin" || userrole === "dispatch") {
+          // для админа или диспетчера — выбор группы вручную
+          filtered = allSessions.filter(session => {
+            const matchDate = weekDates.includes(session.date);
+            const matchGroup = selectedOption === "Все группы" || session.group.groupname === selectedOption;
+            return matchDate && matchGroup;
+          });
+        } else if (userrole === "coach" || userrole === "athlete") {
+          // для тренера или атлета — фиксированная группа
+          filtered = allSessions.filter(session => {
+            const matchDate = weekDates.includes(session.date);
+            const matchGroup = session.group.groupid === groupid;
+            return matchDate && matchGroup;
+          });
+        }
+
+      const grouped = groupWeekSessions(filtered, weekDates);
+      setSchedule(grouped);
+    })
+    .catch(error => {
+      console.error('Ошибка при загрузке расписания:', error);
+      toast("Что-то пошло не так при загрузке расписания! " + "(" + (error.message) + ")", {
+        autoClose: 3000,
+        progressClassName: "custom-progress",
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        
+      });
+    });
+};
 
 
 
@@ -203,27 +262,7 @@ const ScheduleComponent = () => {
       
       axios.get('api/Schedule/getweeklyschedule')
       .then(response => {
-      // const filtered = response.data.filter(s => s.group.groupid === groupid); 
 
-      // const today = new Date();
-      // // const weekStart = '2025-05-06'; // начальная дата недели STATIC
-
-      // const weekStart = today.toISOString().split('T')[0]; // начальная дата недели ПО ДАТЕ UTC (НАПРИМЕР: ПО МОСКВЕ 22:00, ПО UTC - 19:00)
-      //   const weekDates = generateWeekDates(weekStart);
-      //   const grouped = groupWeekSessions(filtered, weekDates);
-      //   setSchedule(grouped);
-
-
-        
-
-      //  const today = new Date();
-      //   const day = today.getDay(); // 0 (вс) - 6 (сб)
-      //   const diffToMonday = (day + 6) % 7; // Преобразует: вс -> 6, пн -> 0, вт -> 1, ..., сб -> 5
-
-      //   const monday = new Date(today);
-      //   monday.setDate(today.getDate() - diffToMonday);
-      //   monday.setHours(0, 0, 0, 0);
-      //   const weekStart = formatLocalDate(monday);
 
       const allSessions = response.data;
       const mondayStr = formatLocalDate(weekStartDate);
@@ -283,7 +322,7 @@ const ScheduleComponent = () => {
     }
     
     
-  }, [weekStartDate, selectedOption, schedule]);
+  }, [weekStartDate, selectedOption]);
 
   const groupByDate = (sessions) => {
     const grouped = {};
@@ -407,11 +446,21 @@ const ScheduleComponent = () => {
                           key={index}
                           className="border p-2 mb-2 rounded bg-blue-50 text-sm"
                         >
+                          <div className='flex-col'>
                           <EditIcon
                             size={16}
                             className="-mb-5 ml-auto hover:text-blue-500 cursor-pointer"
                             onClick={() => handleEditSession(session)}
                           />
+                          <SquareX
+                            size={16}
+                            className="hover:text-red-500 cursor-pointer mt-1"
+                            onClick={() => {
+                              setSessionToDelete(session); // сохранить выбранную сессию
+                              setIsDeleteConfirmOpen(true); // открыть модалку
+                            }}
+                          />
+                          </div>
                           <p>
                             <strong>{session.className}</strong>
                           </p>
@@ -444,6 +493,63 @@ const ScheduleComponent = () => {
                   groups={groups}
                 />
                 )}
+                {isDeleteConfirmOpen && sessionToDelete && (
+                  <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
+                      <h2 className="text-lg font-semibold mb-4 text-center">Удалить занятие?</h2>
+                      <p className="mb-4 text-sm text-gray-600">
+                        Вы уверены, что хотите удалить занятие <strong>{sessionToDelete.className}</strong>?
+                      </p>
+                      <div className="flex justify-end space-x-2">
+                        <button
+                          onClick={() => setIsDeleteConfirmOpen(false)}
+                          className="px-4 py-2 bg-gray-200 rounded"
+                        >
+                          Отмена
+                        </button>
+                        <button
+                          onClick={async () => {
+                            try {
+                            await axios.delete(`api/ClassSessions/deleteClassSessionById?id=${sessionToDelete.id}`);
+                            // Обнови расписание, если нужно — через props или повторный fetch
+                            fetchSchedule();
+                            toast("Занятие с наименованием - " + sessionToDelete.className + " удалено." , {
+                            autoClose: 3000,
+                            progressClassName: "custom-progress",
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                              })
+                            } catch (error) {
+                              console.error('Ошибка при удалении:', error);
+                              toast("Ошибка удаления занятия - " + sessionToDelete.className + " (" + error.message + ")"   , {
+                            autoClose: 3000,
+                            progressClassName: "custom-progress",
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                              })
+                            } finally {
+                              setIsDeleteConfirmOpen(false);
+                              setSessionToDelete(null);
+                            }
+                          }}
+                          className="px-4 py-2 bg-red-600 text-white rounded"
+                        >
+                          Удалить
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+
             </div>
             
         );
